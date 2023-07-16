@@ -55,7 +55,7 @@ word -> [a-z]+
     }
 
 
-`Option`이 기본적으로 두 가지 경우(Some과 None)를 가지는 것에 비해 `ParseResult`는 기본적으로 세 가지 경우를 가집니다: 1) `성공`, 2) `실패`, 3) `실패`. 각 케이스는 두 개의 항목으로 구성된 패턴으로 일치합니다. 성공`의 경우 첫 번째 항목은 구문 분석기가 생성한 객체("단어"는 `Parser[String]`를 반환하므로 문자열)이며, `실패` 및 `오류`의 경우 첫 번째 항목은 오류 메시지입니다. 모든 경우에서 일치 항목의 두 번째 항목은 일치하지 않는 나머지 입력이며, 여기서는 상관하지 않습니다. 하지만 복잡한 오류 처리나 후속 구문 분석을 수행한다면 세심한 주의를 기울일 것입니다. 실패`와 `오류`의 차이점은 `실패`의 경우 구문 분석이 계속될 때 구문 분석이 역추적되는 반면(이 규칙이 작동하지 않았지만 다른 문법 규칙이 있을 수 있음), `오류`의 경우 치명적이며 역추적이 없다는 것입니다(구문 오류가 있고 이 언어의 문법과 제공한 식을 일치시킬 방법이 없으므로 식을 편집하고 다시 시도하십시오).
+`Option`이 기본적으로 두 가지 경우(Some과 None)를 가지는 것에 비해 `ParseResult`는 기본적으로 세 가지 경우를 가집니다: 1) `성공`, 2) `실패`, 3) `실패`. 각 케이스는 두 개의 항목으로 구성된 패턴으로 일치합니다. `성공`의 경우 첫 번째 항목은 구문 분석기가 생성한 객체("단어"는 `Parser[String]`를 반환하므로 문자열)이며, `실패` 및 `오류`의 경우 첫 번째 항목은 오류 메시지입니다. 모든 경우에서 일치 항목의 두 번째 항목은 일치하지 않는 나머지 입력이며, 여기서는 상관하지 않습니다. 하지만 복잡한 오류 처리나 후속 구문 분석을 수행한다면 세심한 주의를 기울일 것입니다. 실패`와 `오류`의 차이점은 `실패`의 경우 구문 분석이 계속될 때 구문 분석이 역추적되는 반면(이 규칙이 작동하지 않았지만 다른 문법 규칙이 있을 수 있음), `오류`의 경우 치명적이며 역추적이 없다는 것입니다(구문 오류가 있고 이 언어의 문법과 제공한 식을 일치시킬 방법이 없으므로 식을 편집하고 다시 시도하십시오).
 
 이 작은 예제는 필요한 파서 결합기 배관을 많이 보여줍니다. 이제 나머지 배관 중 일부를 보여주기 위해 약간 더 복잡한(물론 인위적인) 예제를 살펴 보겠습니다. 우리가 실제로 찾고자 하는 것이 단어 뒤에 숫자가 오는 것이라고 가정해 봅시다. 이것이 긴 문서에서 단어의 빈도 수에 대한 데이터라고 가정해 보겠습니다. 물론 간단한 정규식 일치를 통해 이 작업을 수행하는 방법도 있지만, 좀 더 추상적인 접근 방식을 취해 결합기 배관을 좀 더 보여드리겠습니다. 단어 외에도 숫자를 일치시켜야 하고, 단어와 숫자를 함께 일치시켜야 할 것입니다. 먼저 단어와 개수를 모으는 새로운 유형을 추가해 보겠습니다. 다음은 이를 위한 간단한 케이스 클래스입니다:
 
@@ -65,7 +65,7 @@ word -> [a-z]+
                               "occurs with frequency " + count
     }
 
-Now we want our parser to return instances of this case class rather than instances of `String`. In the context of traditional parsing, productions that return primitive objects like strings and numbers are performing lexical analysis (aka tokenization, typically using regular expressions) whereas productions that return composite objects correspond to the creation of Abstract Syntax Trees (ASTs). Indeed, in the revised parser class, below, the words and numbers are recognized by regular expressions and the word frequencies use a higher-order pattern. So two of our grammar rules are for tokenization and the third builds the AST:
+이제 구문 분석기가 '문자열'의 인스턴스가 아닌 이 케이스 클래스의 인스턴스를 반환하기를 원합니다. 기존 구문 분석의 맥락에서 문자열과 숫자와 같은 원시 객체를 반환하는 프로덕션은 어휘 분석(일명 토큰화, 일반적으로 정규 표현식을 사용)을 수행하는 반면, 복합 객체를 반환하는 프로덕션은 추상 구문 트리(AST)를 생성하는 것에 해당합니다. 실제로 아래의 수정된 구문 분석기 클래스에서는 단어와 숫자를 정규식으로 인식하고 단어 빈도는 고차 패턴을 사용합니다. 따라서 문법 규칙 중 두 개는 토큰화를 위한 것이고 세 번째 규칙은 AST를 구축하는 것입니다:
  
     class SimpleParser extends RegexParsers {
       def word: Parser[String]   = """[a-z]+""".r       ^^ { _.toString }
