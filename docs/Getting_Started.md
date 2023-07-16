@@ -8,11 +8,12 @@ word -> [a-z]+
 
 구문 분석기의 모습은 다음과 같습니다: 
 
-
-    import scala.util.parsing.combinator._
-    class SimpleParser extends RegexParsers {
-      def word: Parser[String]    = """[a-z]+""".r ^^ { _.toString }
-    }
+```scala
+import scala.util.parsing.combinator._
+class SimpleParser extends RegexParsers {
+  def word: Parser[String]    = """[a-z]+""".r ^^ { _.toString }
+}
+```
 
 
 [scala.util.parsing.combinator](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/index.html) 패키지에는 흥미로운 것들이 모두 들어 있습니다. 우리 구문 분석기는 어휘 분석을 수행하기 때문에 [RegexParsers](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/RegexParsers.html)를 확장합니다. 
@@ -20,15 +21,17 @@ word -> [a-z]+
 
 그렇다면 이 파서를 어떻게 사용할까요? 문자열에서 단어를 추출하고 싶으면
 
-
-    SimpleParser.parse(SimpleParser.word(myString))
+```scala
+SimpleParser.parse(SimpleParser.word(myString))
+```
 
 다음은 이를 위한 간단한 프로그램입니다.
 
-    object TestSimpleParser extends SimpleParser {
-      def main(args: Array[String]) = println(parse(word, "johnny come lately"))
-    }
-
+```scala
+object TestSimpleParser extends SimpleParser {
+  def main(args: Array[String]) = println(parse(word, "johnny come lately"))
+}
+```
 
 여기서 주목해야 할 두 가지가 있습니다:
  
