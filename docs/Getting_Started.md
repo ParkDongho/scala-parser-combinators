@@ -16,7 +16,7 @@ word -> [a-z]+
 
 
 [scala.util.parsing.combinator](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/index.html) 패키지에는 흥미로운 것들이 모두 들어 있습니다. 우리 구문 분석기는 어휘 분석을 수행하기 때문에 [RegexParsers](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/RegexParsers.html)를 확장합니다. 
-`""""[a-z]+"""".r`은 정규식입니다. ^^는 "함수 적용을 위한 파서 결합기"로 [문서화](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/Parsers$Parser.html#^^[U](f:T=>U):Parsers.this.Parser[U])되어 있습니다. 기본적으로 `^^` 왼쪽의 구문 분석이 성공하면 오른쪽의 함수가 실행됩니다. yacc 구문 분석을 수행했다면, `^^`의 왼쪽은 문법 규칙에 해당하고 오른쪽은 규칙에 의해 생성된 코드에 해당합니다. "word" 메서드는 문자열 타입의 파서를 반환하므로, `^^` 오른쪽의 함수는 문자열을 반환해야 합니다.
+`""""[a-z]+"""".r`은 정규식입니다. `^^`는 "함수 적용을 위한 파서 결합기"로 [문서화](https://javadoc.io/static/org.scala-lang.modules/scala-parser-combinators_2.13/2.1.0/scala/util/parsing/combinator/Parsers$Parser.html#^^[U](f:T=>U):Parsers.this.Parser[U])되어 있습니다. 기본적으로 `^^` 왼쪽의 구문 분석이 성공하면 오른쪽의 함수가 실행됩니다. yacc 구문 분석을 수행했다면, `^^`의 왼쪽은 문법 규칙에 해당하고 오른쪽은 규칙에 의해 생성된 코드에 해당합니다. "word" 메서드는 문자열 타입의 파서를 반환하므로, `^^` 오른쪽의 함수는 문자열을 반환해야 합니다.
 
 그렇다면 이 파서를 어떻게 사용할까요? 문자열에서 단어를 추출하고 싶으면
 
